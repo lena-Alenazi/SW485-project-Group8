@@ -1,15 +1,10 @@
-import java.util.Arrays;
+
 import java.util.Scanner;
 
 public class testingAssignment {
 
   
-    public static void printMatrix(int[][] matrix) {
-        for (int[] row : matrix) {
-            System.out.println(Arrays.toString(row));
-        }
-    }
-
+  
     public static void printAssignmentDescription(int[] assignment) {
         for (int task = 0; task < assignment.length; task++) {
             System.out.println("Task " + (task + 1) + " is assigned to Worker " + (assignment[task] + 1));
@@ -31,7 +26,7 @@ public class testingAssignment {
 
         // Print the original matrix
         System.out.println("Original Cost Matrix:");
-        printMatrix(costMatrix);
+        AssignmentProblemSolver.printMatrix(costMatrix);
 
         // Measure the computational time
         long startTime = System.currentTimeMillis();
