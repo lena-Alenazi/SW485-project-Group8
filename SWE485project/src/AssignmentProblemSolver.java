@@ -1,9 +1,8 @@
+
 import java.util.Scanner;
-import java.util.Random;
 
 public class AssignmentProblemSolver {
 
-    // Method to perform the assignment
     public static int[] doAssignment(int[][] costMatrix) {
         int numTasks = costMatrix.length;
         int[] assignedAgentsForForwardChecking = new int[numTasks];
@@ -26,19 +25,21 @@ public class AssignmentProblemSolver {
         return assignment;
     }
 
-    // Method to generate a random cost matrix
-    public static int[][] generateRandomCostMatrix(int n) {
-        Random rand = new Random();
-        int[][] costMatrix = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                costMatrix[i][j] = rand.nextInt(10) + 1;
-            }
+    public static int[][] generateCostMatrix(int n) {
+        int[][] costMatrix = {
+            {9, 8, 7, 6},
+            {3, 6, 5, 9},
+            {2, 8, 6, 1},
+            {4, 3, 7, 9}
+        };
+
+        if (costMatrix.length != n || costMatrix[0].length != n) {
+            throw new IllegalArgumentException("The provided cost matrix does not match the size " + n);
         }
+
         return costMatrix;
     }
 
-    // Method to print the matrix
     public static void printMatrix(int[][] matrix) {
         for (int[] row : matrix) {
             for (int value : row) {
@@ -48,7 +49,6 @@ public class AssignmentProblemSolver {
         }
     }
 
-    // Method to print assignment description
     public static void printAssignmentDescription(int[] assignment, int[][] costMatrix) {
         int totalCost = 0;
         for (int task = 0; task < assignment.length; task++) {
@@ -61,41 +61,18 @@ public class AssignmentProblemSolver {
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the size of the matrix (n): ");
-        int n = scanner.nextInt();
-        System.out.print("Enter the number of instances to test: ");
-        int numInstances = scanner.nextInt();
-        
-        for (int instance = 0; instance < numInstances; instance++) {
-            System.out.println("\nInstance " + (instance + 1) + ":");
+        int n = 4;
 
-            int[][] costMatrix;
-            System.out.print("Do you want to enter your own cost matrix? (y/n): ");
-            if (scanner.next().toLowerCase().equals("y")) {
-                costMatrix = new int[n][n];
-                for (int i = 0; i < n; i++) {
-                    for (int j = 0; j < n; j++) {
-                        System.out.print("Enter cost for task " + (i + 1) + " and worker " + (j + 1) + ": ");
-                        costMatrix[i][j] = scanner.nextInt();
-                    }
-                }
-                System.out.println("User-Entered Cost Matrix:");
-            } else {
-                costMatrix = generateRandomCostMatrix(n);
-                System.out.println("Randomly Generated Cost Matrix:");
-            }
-            printMatrix(costMatrix);
+        System.out.println("\nInstance:");
+        int[][] costMatrix = generateCostMatrix(n);
+        System.out.println("Constant Cost Matrix:");
+        printMatrix(costMatrix);
 
-            long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
 
-            int[] resultAssignment = doAssignment(costMatrix);
-
-            System.out.println("\nTask assignment:");
-            printAssignmentDescription(resultAssignment, costMatrix);
-            System.out.println("Computational time: " + (System.currentTimeMillis() - startTime) + " milliseconds");
-        }
-        
-        scanner.close();
+        int[] resultAssignment = doAssignment(costMatrix);
+        System.out.println("\nTask assignment:");
+        printAssignmentDescription(resultAssignment, costMatrix);
+        System.out.println("Computational time: " + (System.currentTimeMillis() - startTime) + " milliseconds");
     }
 }
