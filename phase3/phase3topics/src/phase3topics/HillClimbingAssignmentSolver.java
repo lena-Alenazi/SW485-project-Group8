@@ -1,20 +1,19 @@
 package phase3topics;
 
 import java.util.Random;
-import java.util.Scanner;
 
 public class HillClimbingAssignmentSolver {
 
     // Method to perform the assignment using hill climbing
-    public static int[] doHillClimbingAssignment(int[][] costMatrix) {
-        int numTasks = costMatrix.length;
-        Random rand = new Random();
+    public static int[] HillClimbingAssignment(int n) {
+        // Generate a constant cost matrix
+        int[][] costMatrix = generateCostMatrix(n);
         
         // Initialize a complete assignment
-        int[] assignment = initializeAssignment(numTasks);
+        int[] assignment = initializeAssignment(n);
         
         // Shuffle the initial assignment
-        shuffleAssignment(assignment, rand);
+        shuffleAssignment(assignment, new Random());
         
         // Compute initial total cost
         int currentCost = computeTotalCost(assignment, costMatrix);
@@ -23,8 +22,9 @@ public class HillClimbingAssignmentSolver {
         while (true) {
             // Generate a neighboring solution by swapping two tasks
             int[] neighbor = assignment.clone();
-            int task1 = rand.nextInt(numTasks);
-            int task2 = rand.nextInt(numTasks);
+            Random random = new Random();
+            int task1 = random.nextInt(n);
+            int task2 = random.nextInt(n);
             swapAssignments(neighbor, task1, task2);
             
             // Compute the cost of the neighboring solution
@@ -83,12 +83,13 @@ public class HillClimbingAssignmentSolver {
 
     // Main method to run the hill climbing local search algorithm
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the size of the matrix (n): ");
-        int n = scanner.nextInt();
+        int n = 4; // Size of the matrix
 
-        // Generate a random cost matrix
-        int[][] costMatrix = generateRandomCostMatrix(n);
+        // Call the hill climbing function
+        int[] resultAssignment = HillClimbingAssignment(n);
+
+        // Generate a constant cost matrix
+        int[][] costMatrix = generateCostMatrix(n);
 
         // Print the original cost matrix
         System.out.println("Original Cost Matrix:");
@@ -97,26 +98,27 @@ public class HillClimbingAssignmentSolver {
         // Measure the computational time
         long startTime = System.currentTimeMillis();
 
-        // Call the hill climbing function
-        int[] resultAssignment = doHillClimbingAssignment(costMatrix);
-
         // Print the result assignment and the computational time
         System.out.println("\nTask assignment:");
         printAssignmentDescription(resultAssignment, costMatrix);
         System.out.println("\nComputational time: " + (System.currentTimeMillis() - startTime) + " milliseconds");
-
-        scanner.close();
     }
 
-    // Method to generate a random cost matrix
-    public static int[][] generateRandomCostMatrix(int n) {
-        Random rand = new Random();
-        int[][] costMatrix = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                costMatrix[i][j] = rand.nextInt(10) + 1;
-            }
+    // Method to generate a constant cost matrix
+    public static int[][] generateCostMatrix(int n) {
+        // Define a constant 4x4 cost matrix
+        int[][] costMatrix = {
+            {9, 8, 7, 6},
+            {3, 6, 5, 9},
+            {2, 8, 6, 1},
+            {4, 3, 7, 9}
+        };
+
+        // Verify that the size of the matrix matches the expected size `n`
+        if (costMatrix.length != n || costMatrix[0].length != n) {
+            throw new IllegalArgumentException("The provided cost matrix does not match the size " + n);
         }
+
         return costMatrix;
     }
 
